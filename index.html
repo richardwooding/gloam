@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gloam — a dark, purple, terminal-flavored design language</title>
+<meta name="description" content="gloam is a small, dependency-free CSS design language: dark-first, purple-accented, terminal-flavored. Tokens + components + a Claude Code skill to build with it.">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230d1117'/%3E%3Crect x='5' y='12' width='3.5' height='7' rx='1' fill='%23a371f7'/%3E%3Crect x='10.25' y='8' width='3.5' height='11' rx='1' fill='%23bd93ff'/%3E%3Crect x='15.5' y='4' width='3.5' height='15' rx='1' fill='%23d2b3ff'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="gloam — a dark, purple, terminal-flavored design language">
+<meta property="og:description" content="Tokens + components + a Claude Code skill to build pages in the gloam look.">
+<meta property="og:url" content="https://richardwooding.github.io/gloam/">
+<link rel="stylesheet" href="./gloam.css">
+</head>
+<body class="gl">
+<a class="gl-skip" href="#main">Skip to content</a>
+
+<header class="gl-nav">
+  <div class="gl-wrap">
+    <span class="gl-brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+        <rect width="24" height="24" rx="6" fill="var(--gl-panel-2)"/>
+        <rect x="5" y="12" width="3.5" height="7" rx="1" fill="var(--gl-accent)"/>
+        <rect x="10.25" y="8" width="3.5" height="11" rx="1" fill="var(--gl-accent-2)"/>
+        <rect x="15.5" y="4" width="3.5" height="15" rx="1" fill="#d2b3ff"/>
+      </svg>
+      gloam
+    </span>
+    <button class="gl-nav-toggle" aria-label="Toggle navigation" data-gl-nav-toggle="nav">☰</button>
+    <nav id="nav">
+      <a href="#components">Components</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#use">Use it</a>
+      <a href="https://github.com/richardwooding/gloam">GitHub</a>
+      <a class="gl-btn ghost" href="https://github.com/richardwooding/gloam">GitHub ★</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="gl-hero">
+  <div class="gl-wrap gl-hero-grid">
+    <div>
+      <p class="gl-eyebrow">design language · dark · purple · terminal</p>
+      <h1>Build in the <span class="gl-grad">gloam.</span></h1>
+      <p class="sub">A small, dependency-free CSS design language — dark-first, purple-accented, terminal-flavored. Drop in one stylesheet, or let the bundled Claude Code skill build the page for you.</p>
+      <div class="gl-cta">
+        <a class="gl-btn primary" href="#use">Get started</a>
+        <a class="gl-btn ghost" href="https://github.com/richardwooding/gloam">View on GitHub</a>
+      </div>
+      <div class="gl-badges" role="tablist" aria-label="Preview a component" data-gl-tabs>
+        <button class="gl-lang" role="tab" data-gl-tab="cli" aria-selected="true">CLI</button>
+        <button class="gl-lang" role="tab" data-gl-tab="build" aria-selected="false">Build</button>
+        <button class="gl-lang" role="tab" data-gl-tab="deploy" aria-selected="false">Deploy</button>
+      </div>
+      <p class="gl-hint">↑ Pills are real tabs — click to swap the terminal.</p>
+    </div>
+    <div class="gl-term">
+      <div class="bar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span><span class="t">gloam — demo</span></div>
+      <pre data-gl-panel="cli"><span class="pr">$</span> yourtool run .
+<span class="hd">STATUS   TARGET            NOTES</span>
+<span class="n">ok</span>       parse             <span class="loc">142 files</span>
+<span class="n">ok</span>       analyze           <span class="loc">1.2s</span>
+<span class="warn">warn</span>     3 findings        <span class="loc">see report</span></pre>
+      <pre data-gl-panel="build" hidden><span class="pr">$</span> yourtool build --release
+<span class="hd">STEP     RESULT</span>
+<span class="n">compile</span>  <span class="ok">done</span>
+<span class="n">bundle</span>   <span class="ok">done</span>  <span class="loc">2.1 MB</span>
+<span class="ok">built in 4.3s</span></pre>
+      <pre data-gl-panel="deploy" hidden><span class="pr">$</span> yourtool deploy
+<span class="hd">TARGET   URL</span>
+<span class="n">edge</span>     <span class="loc">https://app.example.com</span>
+<span class="ok">live ✓</span></pre>
+    </div>
+  </div>
+</section>
+
+<section id="components">
+  <div class="gl-wrap">
+    <p class="gl-eyebrow">the kit</p>
+    <h2>Components, not just colors.</h2>
+    <p class="gl-lede" style="margin:12px 0 28px">Everything on this page is a gloam component. Copy the markup, keep the classes.</p>
+    <div class="gl-grid feat">
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg></span>Faux terminal</h3><p>The signature hero element — a titled window with prompt, columns, and status colors.</p></div>
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></span>Feature grid</h3><p>Two- or three-up cards with an accent icon chip — like these.</p></div>
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg></span>Pills &amp; tabs</h3><p>Rounded pills that double as tab controls, with a purple selected state.</p></div>
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></span>Code blocks</h3><p>Bordered panels with comment / keyword / string token colors.</p></div>
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>Install snippets</h3><p>One-line commands with a copy button — see below, they work.</p></div>
+      <div class="gl-card"><h3><span class="gl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg></span>Buttons, nav, footer</h3><p>Primary/ghost buttons, a sticky blurred nav, and a tidy footer.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="use">
+  <div class="gl-wrap">
+    <p class="gl-eyebrow">use it</p>
+    <h2>Two ways in.</h2>
+    <div class="gl-split" style="margin-top:24px">
+      <div>
+        <h3 style="font-size:1rem; margin-bottom:12px; color:var(--gl-muted)">Link the stylesheet</h3>
+        <pre class="gl-code"><span class="c">&lt;!-- one file, no build, no deps --&gt;</span>
+<span class="k">&lt;link</span> rel=<span class="s">"stylesheet"</span> href=<span class="s">"gloam.css"</span><span class="k">&gt;</span>
+<span class="k">&lt;script</span> src=<span class="s">"gloam.js"</span> defer<span class="k">&gt;&lt;/script&gt;</span>
+<span class="k">&lt;body</span> class=<span class="s">"gl"</span><span class="k">&gt;</span> … <span class="k">&lt;/body&gt;</span></pre>
+      </div>
+      <div>
+        <h3 style="font-size:1rem; margin-bottom:12px; color:var(--gl-muted)">Or let the skill build it</h3>
+        <pre class="gl-code"><span class="c"># drop the skill into your project</span>
+cp -r skills/gloam .claude/skills/gloam
+
+<span class="c"># then just ask</span>
+<span class="s">"build a landing page in gloam"</span></pre>
+      </div>
+    </div>
+    <div class="gl-install" style="margin-top:28px">
+      <div class="gl-snip"><span class="lbl">clone</span><code id="i1">git clone https://github.com/richardwooding/gloam</code><button class="gl-copy" data-gl-copy="i1">Copy</button></div>
+      <div class="gl-snip"><span class="lbl">css</span><code id="i2">&lt;link rel="stylesheet" href="https://richardwooding.github.io/gloam/gloam.css"&gt;</code><button class="gl-copy" data-gl-copy="i2">Copy</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="tokens">
+  <div class="gl-wrap">
+    <p class="gl-eyebrow">tokens</p>
+    <h2>Themeable by design.</h2>
+    <p class="gl-lede" style="margin:12px 0 20px">Every color is a <code>--gl-*</code> custom property. Dark is the default; light comes free via <code>prefers-color-scheme</code>, and you can force either with <code>data-theme</code>.</p>
+    <div class="gl-grid two">
+      <div class="gl-card"><div class="gl-stat">--gl-accent</div><p style="margin-top:8px">The purple that carries the brand — buttons, links, selected states, complexity numbers.</p></div>
+      <div class="gl-card"><div class="gl-stat">--gl-bg</div><p style="margin-top:8px">Near-black in dark, white in light. Panels, borders, and text all derive from the same small token set.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="gl-footer">
+  <div class="gl-wrap">
+    <span class="gl-brand" style="font-size:.98rem">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="12" width="3.5" height="7" rx="1" fill="var(--gl-accent)"/><rect x="10.25" y="8" width="3.5" height="11" rx="1" fill="var(--gl-accent-2)"/><rect x="15.5" y="4" width="3.5" height="15" rx="1" fill="#d2b3ff"/></svg>
+      gloam · MIT · <span data-gl-year></span>
+    </span>
+    <nav class="gl-fnav">
+      <a href="https://github.com/richardwooding/gloam">GitHub</a>
+      <a href="https://github.com/richardwooding/gloam#readme">Docs</a>
+      <a href="https://github.com/richardwooding/gloam/tree/main/skills/gloam">Skill</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="./gloam.js" defer></script>
+</body>
+</html>

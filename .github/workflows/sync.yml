@@ -1,0 +1,19 @@
+name: sync
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Fail if the copies bundled inside the skill drift from the canonical root files,
+# so gloam.css / gloam.js have a single source of truth.
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: skill references match root
+        run: |
+          set -e
+          diff -u gloam.css skills/gloam/references/gloam.css
+          diff -u gloam.js  skills/gloam/references/gloam.js
+          echo "skill references are in sync with the root files"

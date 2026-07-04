@@ -11,6 +11,8 @@
  *                 container: <div data-gl-tabs>…buttons…</div>
  *                 panels:    <div data-gl-panel="one">…</div>  (hidden unless selected)
  *   Mobile nav:   <button data-gl-nav-toggle="navId">☰</button>  <nav id="navId">…</nav>
+ *   Theme toggle: <button data-gl-theme-toggle aria-label="Toggle color theme">…</button>
+ *                 flips light/dark on <html data-theme>, persisted in localStorage.
  *   Year:         <span data-gl-year></span>
  */
 (function () {
@@ -20,10 +22,44 @@
     else document.addEventListener("DOMContentLoaded", fn);
   }
 
+  // Effective theme: an explicit data-theme wins, else the system preference.
+  // (Reading the computed --gl-bg is unreliable — browsers serialize it as rgb().)
+  function isDark() {
+    var explicit = document.documentElement.getAttribute("data-theme");
+    if (explicit) return explicit === "dark";
+    return !window.matchMedia("(prefers-color-scheme: light)").matches;
+  }
+
+  // Restore a persisted theme as early as this script runs. For flash-free
+  // restore, also add this one-liner in <head> (runs before first paint):
+  //   <script>try{var t=localStorage.getItem("gl-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  try {
+    var savedTheme = localStorage.getItem("gl-theme");
+    if (savedTheme === "light" || savedTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+  } catch (e) { /* ignore */ }
+
   ready(function () {
     // Current year.
     document.querySelectorAll("[data-gl-year]").forEach(function (el) {
       el.textContent = new Date().getFullYear();
+    });
+
+    // Theme toggle: flip light/dark, persist the choice, reflect it in aria-pressed.
+    var themeToggles = document.querySelectorAll("[data-gl-theme-toggle]");
+    function syncToggles() {
+      var dark = isDark();
+      themeToggles.forEach(function (b) { b.setAttribute("aria-pressed", String(dark)); });
+    }
+    syncToggles();
+    themeToggles.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var next = isDark() ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("gl-theme", next); } catch (e) { /* ignore */ }
+        syncToggles();
+      });
     });
 
     // Copy-to-clipboard buttons.

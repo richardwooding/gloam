@@ -59,6 +59,7 @@ Classes are prefixed `gl-`:
 - **Layout:** `gl-wrap`, `gl-section`, `gl-eyebrow`, `gl-lede`, `gl-hint`, `gl-skip`
 - **Nav:** `gl-nav`, `gl-brand`, `gl-nav-toggle`
 - **Buttons:** `gl-btn` + `.primary` / `.ghost`
+- **Theme toggle:** `gl-theme-toggle` (`.gl-sun` / `.gl-moon` SVGs swap via CSS)
 - **Hero:** `gl-hero`, `gl-hero-grid`, `gl-grad`, `gl-cta`
 - **Terminal:** `gl-term` (`.bar`, `.dot`, `pre` + `.pr/.hd/.n/.loc/.ok/.warn` spans)
 - **Pills / tabs:** `gl-badges`, `gl-lang` (uses `aria-selected`)
@@ -74,6 +75,8 @@ Data-attribute driven, no-ops when absent:
 - `data-gl-copy="id"` — copy a snippet (Clipboard API + textarea fallback)
 - `data-gl-tabs` / `data-gl-tab` / `data-gl-panel` — pill tabs
 - `data-gl-nav-toggle="navId"` — mobile nav (closes on link tap)
+- `data-gl-theme-toggle` — flip light/dark on `<html data-theme>`, persisted in
+  localStorage (add `<script>try{var t=localStorage.getItem("gl-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>` in `<head>` for flash-free restore)
 - `data-gl-year` — current year
 
 See [`index.html`](./index.html) for a full working example of every component.

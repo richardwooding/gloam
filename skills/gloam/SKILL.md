@@ -14,7 +14,8 @@ Everything you need is in this skill folder:
 - `references/tokens.md` — the color/type/spacing tokens (dark + light).
 - `references/components.md` — copy-paste HTML for every component.
 - `references/gloam.css` — the full stylesheet (link it, or inline its contents).
-- `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav).
+- `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav,
+  theme toggle).
 
 ## When to use this
 
@@ -65,7 +66,8 @@ Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
    command and a few output rows (`.pr` prompt, `.hd` header, `.n` accent number, `.loc`
    muted location, `.ok`/`.warn` status). Make the content real, not lorem ipsum.
 5. **Wire behaviors with data-attributes** (`data-gl-copy`, `data-gl-tabs`/`data-gl-tab`/
-   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-year`) — `gloam.js` activates them.
+   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-theme-toggle`, `data-gl-year`) —
+   `gloam.js` activates them.
 
 ## Rules that keep it "gloam"
 
@@ -88,6 +90,8 @@ Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
 - Nav: `gl-nav` > `gl-wrap` > `gl-brand` + `<nav>`; mobile via `gl-nav-toggle` +
   `data-gl-nav-toggle`.
 - Buttons: `gl-btn` + `.primary` / `.ghost`.
+- Theme toggle: `gl-theme-toggle[data-gl-theme-toggle]` with `.gl-sun` + `.gl-moon` SVGs;
+  persists `data-theme` in localStorage (add the `<head>` restore snippet for no flash).
 - Hero: `gl-hero` > `gl-wrap.gl-hero-grid`; headline accent = `gl-grad`.
 - Terminal: `gl-term` > `.bar` (three `.dot`s + `.t` title) + `<pre>`.
 - Pills/tabs: `gl-badges[data-gl-tabs]` of `gl-lang[data-gl-tab]`, panels `[data-gl-panel]`.

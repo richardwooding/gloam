@@ -57,9 +57,15 @@
     // Pill tabs: clicking [data-gl-tab=X] inside [data-gl-tabs] shows [data-gl-panel=X].
     document.querySelectorAll("[data-gl-tabs]").forEach(function (group) {
       var tabs = group.querySelectorAll("[data-gl-tab]");
-      // Scope panels to this group's container so multiple tab groups on one
-      // page don't toggle each other's panels.
-      var container = group.parentElement || group.parentNode || document;
+      // Scope panels to the nearest ancestor that actually contains them, so
+      // multiple tab groups on a page don't toggle each other's panels — while
+      // still working when the group and its panels sit in sibling columns
+      // (e.g. hero pills in one column, terminal panels in the other).
+      var container = group.parentElement;
+      while (container && !container.querySelector("[data-gl-panel]")) {
+        container = container.parentElement;
+      }
+      if (!container) container = document;
       function select(name) {
         tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-gl-tab") === name)); });
         container.querySelectorAll("[data-gl-panel]").forEach(function (p) {

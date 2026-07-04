@@ -47,7 +47,8 @@
           var ta = document.createElement("textarea");
           ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
           document.body.appendChild(ta); ta.select();
-          try { document.execCommand("copy"); done(); } catch (e) { /* ignore */ }
+          // Only signal success if the copy actually happened.
+          try { if (document.execCommand("copy")) done(); } catch (e) { /* ignore */ }
           document.body.removeChild(ta);
         }
       });
@@ -56,9 +57,18 @@
     // Pill tabs: clicking [data-gl-tab=X] inside [data-gl-tabs] shows [data-gl-panel=X].
     document.querySelectorAll("[data-gl-tabs]").forEach(function (group) {
       var tabs = group.querySelectorAll("[data-gl-tab]");
+      // Scope panels to the nearest ancestor that actually contains them, so
+      // multiple tab groups on a page don't toggle each other's panels — while
+      // still working when the group and its panels sit in sibling columns
+      // (e.g. hero pills in one column, terminal panels in the other).
+      var container = group.parentElement;
+      while (container && !container.querySelector("[data-gl-panel]")) {
+        container = container.parentElement;
+      }
+      if (!container) container = document;
       function select(name) {
         tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-gl-tab") === name)); });
-        document.querySelectorAll("[data-gl-panel]").forEach(function (p) {
+        container.querySelectorAll("[data-gl-panel]").forEach(function (p) {
           p.hidden = p.getAttribute("data-gl-panel") !== name;
         });
       }
@@ -75,7 +85,8 @@
       if (!nav) return;
       btn.addEventListener("click", function () { nav.classList.toggle("open"); });
       nav.addEventListener("click", function (e) {
-        if (e.target.tagName === "A") nav.classList.remove("open");
+        // closest("a") so clicks on elements nested inside a link still close.
+        if (e.target.closest && e.target.closest("a")) nav.classList.remove("open");
       });
     });
   });

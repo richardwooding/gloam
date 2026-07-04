@@ -16,6 +16,8 @@ Everything you need is in this skill folder:
 - `references/gloam.css` — the full stylesheet (link it, or inline its contents).
 - `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav,
   theme toggle).
+- `scripts/sync-gloam.sh` + `scripts/gloam-sync.yml` — keep a linked consumer's copy of
+  the assets in sync with the gloam repo (see "Keeping a consumer in sync").
 
 ## When to use this
 
@@ -51,6 +53,22 @@ preferred mode for Claude Artifacts (a strict CSP blocks external hosts) and for
 zero-dependency Pages sites.
 
 Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
+
+## Keeping a consumer in sync
+
+A linked consumer holds a *copy* of `gloam.css`/`gloam.js`, so it can drift as
+gloam evolves. This skill ships a sync step in `scripts/`:
+
+- `scripts/sync-gloam.sh [dir] [ref]` — refetch both files from
+  `github.com/richardwooding/gloam` (default `main`) into `dir` and record the
+  source commit in `dir/.gloam-version`. Drop it next to the vendored files
+  (e.g. `site/sync-gloam.sh`) and run `sh site/sync-gloam.sh site`.
+- `scripts/gloam-sync.yml` — a GitHub Actions workflow template that runs the
+  script weekly and opens a PR when the copy drifts. Copy it into the
+  consumer's `.github/workflows/` and set `GLOAM_DIR`.
+
+Inlined pages have no separate files to sync — re-run the skill (or re-paste
+`references/gloam.css`/`gloam.js`) to update them.
 
 ## How to build a page
 

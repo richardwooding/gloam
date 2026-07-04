@@ -37,6 +37,20 @@ cp -r skills/gloam .claude/skills/gloam      # or ~/.claude/skills/gloam
 The skill is self-contained — it bundles the tokens, a component catalog, and
 copies of `gloam.css` / `gloam.js` under `references/`.
 
+## Keeping a consumer in sync
+
+A site that links `gloam.css`/`gloam.js` holds a copy that can drift. The skill
+ships a sync step under [`skills/gloam/scripts/`](./skills/gloam/scripts):
+
+- `sync-gloam.sh [dir] [ref]` — refetch both files from this repo (default
+  `main`) into `dir` and record the source commit in `dir/.gloam-version`.
+- `gloam-sync.yml` — a GitHub Actions workflow template that runs the script
+  weekly and opens a PR when the copy drifts.
+
+```sh
+cp skills/gloam/scripts/sync-gloam.sh site/ && sh site/sync-gloam.sh site
+```
+
 ## Tokens
 
 Every color is a `--gl-*` custom property. **Dark is the default**; light is

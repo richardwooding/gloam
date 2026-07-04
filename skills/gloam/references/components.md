@@ -30,7 +30,7 @@ on `gloam.css`; the interactive ones (`data-gl-*`) rely on `gloam.js`. Put `clas
       </svg>
       yourbrand
     </span>
-    <button class="gl-nav-toggle" aria-label="Toggle navigation" data-gl-nav-toggle="nav">☰</button>
+    <button class="gl-nav-toggle" aria-label="Toggle navigation" data-gl-nav-toggle="nav" aria-expanded="false">☰</button>
     <nav id="nav">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
@@ -126,7 +126,16 @@ location, `.ok` green, `.warn` amber. Keep output realistic.
 <div data-gl-panel="b" hidden>…panel B…</div>
 ```
 
-Non-tab pills (just badges) are the same `gl-lang` without `data-gl-tab`.
+Non-tab pills (just badges) are the same `gl-lang` without `data-gl-tab` — they
+render static (no pointer/hover/focus). For a **static list** of badges, use a
+semantic list so screen readers announce the count:
+
+```html
+<ul class="gl-badges" aria-label="Supported types">
+  <li class="gl-lang">go</li>
+  <li class="gl-lang">rust</li>
+</ul>
+```
 
 ## Code block (with token colors) + side-by-side
 

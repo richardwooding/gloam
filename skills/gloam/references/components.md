@@ -115,6 +115,26 @@ location, `.ok` green, `.warn` amber. Keep output realistic.
 </section>
 ```
 
+### Clickable card
+
+Make a whole card a link with the stretched-link pattern: add `gl-card-link` to the card and
+`gl-stretch` to its primary `<a>`. The card gets an accent border on hover/focus, a click
+anywhere follows the stretched link, and any *other* links inside stay independently clickable.
+
+```html
+<article class="gl-card gl-card-link">
+  <h3>Project name</h3>
+  <p>One sentence on what it is.</p>
+  <p class="gl-hint" style="margin-top:14px">
+    <a class="gl-stretch" href="https://example.com/">Website ↗</a> ·
+    <a href="https://github.com/you/project">Code ↗</a>
+  </p>
+</article>
+```
+
+`gl-stretch` needs a positioned ancestor — `gl-card-link` provides it. Keep exactly one
+`gl-stretch` per card; the other anchors remain normal links.
+
 ## Carousel (feature cards)
 
 A scroll-snap track of `gl-card`s. `gloam.js` (via `data-gl-carousel`) generates the

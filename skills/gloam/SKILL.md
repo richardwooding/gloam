@@ -91,8 +91,8 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
    command and a few output rows (`.pr` prompt, `.hd` header, `.n` accent number, `.loc`
    muted location, `.ok`/`.warn` status). Make the content real, not lorem ipsum.
 5. **Wire behaviors with data-attributes** (`data-gl-copy`, `data-gl-tabs`/`data-gl-tab`/
-   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-theme-toggle`, `data-gl-year`) —
-   `gloam.js` activates them.
+   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-theme-toggle`, `data-gl-year`,
+   `data-gl-carousel`) — `gloam.js` activates them.
 
 ## Rules that keep it "gloam"
 
@@ -107,7 +107,8 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
   interactive pills (with `aria-selected`); visible `:focus-visible` rings; sufficient
   contrast in both themes (the tokens are tuned for it).
 - **Restraint over decoration.** Whitespace, one accent, crisp type. Avoid gradients beyond
-  the primary button and the hero headline `gl-grad`.
+  the primary button and the hero headline `gl-grad`. Motion is subtle and optional: the
+  only animated component is the carousel, and it must honor `prefers-reduced-motion`.
 
 ## Quick reference
 
@@ -123,6 +124,9 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
   Interactive styling is scoped to `[data-gl-tab]`; a bare `gl-lang` is a **static badge** —
   use a semantic `<ul class="gl-badges">` of `<li class="gl-lang">` for a list of them.
 - Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number).
+- Carousel: `gl-carousel[data-gl-carousel]` > `gl-carousel-viewport[data-gl-carousel-viewport]`
+  of `gl-card` slides + `gl-carousel-ctrls` (prev/next `gl-carousel-btn` + empty
+  `gl-carousel-dots`). `gloam.js` builds the dots and auto-advances (motion-safe).
 - Code: `pre.gl-code` with `.c`/`.k`/`.s` spans; side-by-side via `gl-split`.
 - Install: `gl-install` > `gl-snip` (`.lbl` + `<code id>` + `gl-copy[data-gl-copy]`).
 - Footer: `gl-footer` > `gl-wrap` > `gl-brand` + `gl-fnav`.

@@ -115,6 +115,37 @@ location, `.ok` green, `.warn` amber. Keep output realistic.
 </section>
 ```
 
+## Carousel (feature cards)
+
+A scroll-snap track of `gl-card`s. `gloam.js` (via `data-gl-carousel`) generates the
+dot indicators, wires prev/next, and auto-advances every 6s — pausing on hover/focus and
+disabling autoplay entirely under `prefers-reduced-motion`. Without JS it degrades to a
+plain scrollable row, and the viewport is the only thing that scrolls sideways.
+
+```html
+<div class="gl-carousel" data-gl-carousel role="group" aria-roledescription="carousel" aria-label="Projects">
+  <div class="gl-carousel-viewport" data-gl-carousel-viewport>
+    <article class="gl-card">
+      <h3>Project one</h3>
+      <p>One sentence on what it is.</p>
+    </article>
+    <!-- repeat gl-card slides -->
+  </div>
+  <div class="gl-carousel-ctrls">
+    <button class="gl-carousel-btn" data-gl-carousel-prev aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="gl-carousel-dots" data-gl-carousel-dots></div>
+    <button class="gl-carousel-btn" data-gl-carousel-next aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+```
+
+Shows 3 cards at a time (2 ≤820px, 1 ≤560px). The `.gl-carousel-dots` container is
+filled by `gloam.js`; leave it empty. Slides are ordinary `gl-card`s.
+
 ## Pill tabs (swap panels)
 
 ```html

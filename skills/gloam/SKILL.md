@@ -23,8 +23,9 @@ Everything you need is in this skill folder:
 
 Building a landing page, hero, feature grid, pricing section, docs site, or any page/
 component that should carry the gloam aesthetic — or when the user names gloam or asks for
-a "dark purple terminal-style" page. Also appropriate for an HTML **Artifact** or a
-**GitHub Pages** site (inline mode, below).
+a "dark purple terminal-style" page. Also appropriate for an HTML **Artifact** (inline
+mode) or a **GitHub Pages** site — either inlined, or **linked** with the sync workflow so
+the published page tracks gloam upstream (both modes below).
 
 ## The look, in one paragraph
 
@@ -49,8 +50,9 @@ an afterthought.
 **B — Inlined (single self-contained file — Artifacts, GitHub Pages, email-safe).** Paste
 the entire contents of `references/gloam.css` into a `<style>` in `<head>`, and
 `references/gloam.js` into a `<script>` before `</body>`. No external requests. This is the
-preferred mode for Claude Artifacts (a strict CSP blocks external hosts) and for
-zero-dependency Pages sites.
+required mode for Claude Artifacts (a strict CSP blocks external hosts). For a **GitHub
+Pages** site either mode works: inline for a truly single-file drop, or **linked** (below)
+so the sync workflow keeps the page current with gloam.
 
 Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
 
@@ -66,6 +68,11 @@ gloam evolves. This skill ships a sync step in `scripts/`:
 - `scripts/gloam-sync.yml` — a GitHub Actions workflow template that runs the
   script weekly and opens a PR when the copy drifts. Copy it into the
   consumer's `.github/workflows/` and set `GLOAM_DIR`.
+
+A **GitHub Pages** site is the natural linked consumer: vendor `gloam.css`/`gloam.js`
+into `docs/`, drop `sync-gloam.sh` beside them, link them from the page, and add
+`gloam-sync.yml` with `GLOAM_DIR: docs` — a weekly PR then keeps the published page in
+step with gloam.
 
 Inlined pages have no separate files to sync — re-run the skill (or re-paste
 `references/gloam.css`/`gloam.js`) to update them.
@@ -113,6 +120,8 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
 - Hero: `gl-hero` > `gl-wrap.gl-hero-grid`; headline accent = `gl-grad`.
 - Terminal: `gl-term` > `.bar` (three `.dot`s + `.t` title) + `<pre>`.
 - Pills/tabs: `gl-badges[data-gl-tabs]` of `gl-lang[data-gl-tab]`, panels `[data-gl-panel]`.
+  Interactive styling is scoped to `[data-gl-tab]`; a bare `gl-lang` is a **static badge** —
+  use a semantic `<ul class="gl-badges">` of `<li class="gl-lang">` for a list of them.
 - Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number).
 - Code: `pre.gl-code` with `.c`/`.k`/`.s` spans; side-by-side via `gl-split`.
 - Install: `gl-install` > `gl-snip` (`.lbl` + `<code id>` + `gl-copy[data-gl-copy]`).

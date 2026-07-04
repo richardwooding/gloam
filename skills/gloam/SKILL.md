@@ -123,7 +123,9 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
 - Pills/tabs: `gl-badges[data-gl-tabs]` of `gl-lang[data-gl-tab]`, panels `[data-gl-panel]`.
   Interactive styling is scoped to `[data-gl-tab]`; a bare `gl-lang` is a **static badge** —
   use a semantic `<ul class="gl-badges">` of `<li class="gl-lang">` for a list of them.
-- Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number).
+- Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number). Make one
+  clickable with `gl-card-link` + a `gl-stretch` primary `<a>` (whole card follows it; other
+  links stay clickable).
 - Carousel: `gl-carousel[data-gl-carousel]` > `gl-carousel-viewport[data-gl-carousel-viewport]`
   of `gl-card` slides + `gl-carousel-ctrls` (prev/next `gl-carousel-btn` + empty
   `gl-carousel-dots`). `gloam.js` builds the dots and auto-advances (motion-safe).

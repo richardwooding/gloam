@@ -66,7 +66,7 @@
     document.querySelectorAll("[data-gl-copy]").forEach(function (btn) {
       // Capture the label once and clear any pending reset, so rapid repeat
       // clicks can't latch "Copied" as the restore text.
-      var originalText = btn.textContent;
+      var originalHTML = btn.innerHTML;
       var resetTimer = null;
       btn.addEventListener("click", function () {
         var target = document.getElementById(btn.getAttribute("data-gl-copy"));
@@ -76,7 +76,8 @@
           btn.textContent = "Copied";
           btn.classList.add("done");
           if (resetTimer) clearTimeout(resetTimer);
-          resetTimer = setTimeout(function () { btn.textContent = originalText; btn.classList.remove("done"); }, 1400);
+          // Restore via innerHTML so any nested markup (icons) survives.
+          resetTimer = setTimeout(function () { btn.innerHTML = originalHTML; btn.classList.remove("done"); }, 1400);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(done).catch(fallback);
@@ -108,7 +109,7 @@
       if (!container) container = document;
       // Only toggle panels this group owns, so two tab groups sharing an
       // ancestor don't hide each other's panels.
-      var owned = {};
+      var owned = Object.create(null);
       tabs.forEach(function (t) { owned[t.getAttribute("data-gl-tab")] = true; });
       function select(name) {
         tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-gl-tab") === name)); });

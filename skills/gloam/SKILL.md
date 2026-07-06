@@ -72,8 +72,9 @@ gloam evolves. This skill ships a sync step in `scripts/`:
 **One-time repo setting (required for the workflow's PR).** The workflow opens the
 drift PR with the built-in `GITHUB_TOKEN`, so each consumer repo must permit it:
 enable **Settings → Actions → General → Workflow permissions → "Allow GitHub Actions
-to create and approve pull requests"**, or run once:
-`gh api -X PUT repos/OWNER/REPO/actions/permissions/workflow -F can_approve_pull_request_reviews=true`.
+to create and approve pull requests"**, or run once from inside the consumer repo
+(`gh` expands `{owner}`/`{repo}` from its git remote):
+`gh api -X PUT repos/{owner}/{repo}/actions/permissions/workflow -F can_approve_pull_request_reviews=true`.
 Without it the sync commit still pushes but PR creation fails with *"GitHub Actions is
 not permitted to create or approve pull requests."* It's per-repo — user-owned accounts
 have no org-wide default, so set it on every new consumer.

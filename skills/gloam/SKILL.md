@@ -69,6 +69,15 @@ gloam evolves. This skill ships a sync step in `scripts/`:
   script weekly and opens a PR when the copy drifts. Copy it into the
   consumer's `.github/workflows/` and set `GLOAM_DIR`.
 
+**One-time repo setting (required for the workflow's PR).** The workflow opens the
+drift PR with the built-in `GITHUB_TOKEN`, so each consumer repo must permit it:
+enable **Settings → Actions → General → Workflow permissions → "Allow GitHub Actions
+to create and approve pull requests"**, or run once:
+`gh api -X PUT repos/OWNER/REPO/actions/permissions/workflow -F can_approve_pull_request_reviews=true`.
+Without it the sync commit still pushes but PR creation fails with *"GitHub Actions is
+not permitted to create or approve pull requests."* It's per-repo — user-owned accounts
+have no org-wide default, so set it on every new consumer.
+
 A **GitHub Pages** site is the natural linked consumer: vendor `gloam.css`/`gloam.js`
 into `docs/`, drop `sync-gloam.sh` beside them, link them from the page, and add
 `gloam-sync.yml` with `GLOAM_DIR: docs` — a weekly PR then keeps the published page in

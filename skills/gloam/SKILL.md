@@ -142,5 +142,6 @@ Inlined pages have no separate files to sync — re-run the skill (or re-paste
 - Code: `pre.gl-code` with `.c`/`.k`/`.s` spans; side-by-side via `gl-split`.
 - Install: `gl-install` > `gl-snip` (`.lbl` + `<code id>` + `gl-copy[data-gl-copy]`).
 - Footer: `gl-footer` > `gl-wrap` > `gl-brand` + `gl-fnav`.
+- Analytics: **opt-in** GTM snippet (linked GitHub Pages only — never inline into an Artifact; external, CSP-blocked) — see components.md.
 
 Full, correct markup for each is in `references/components.md` — prefer copying from there.

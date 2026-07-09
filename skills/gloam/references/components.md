@@ -228,6 +228,38 @@ Each `data-gl-copy` points at the `id` of the `<code>` to copy.
 </footer>
 ```
 
+## Analytics (opt-in — external, not for Artifacts)
+
+gloam ships **no** analytics — it's self-contained by design, and inlined pages run in Claude
+Artifacts under a CSP that blocks external hosts. For a **linked GitHub Pages** site you can
+opt in to Google Tag Manager by pasting the two standard snippets and swapping in your own
+container ID. Do **not** add this to an inlined Artifact — the tag is blocked by the CSP.
+
+Loader — as high in `<head>` as possible (right after the `charset` / `viewport` metas):
+
+```html
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+<!-- End Google Tag Manager -->
+```
+
+`<noscript>` fallback — immediately after the opening `<body class="gl">`:
+
+```html
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+```
+
+Replace `GTM-XXXXXXX` with your container ID. The snippet only loads the container; configure
+GA4 or other tags in the Tag Manager UI, not in the page. It loads unconditionally — add a
+consent gate if your audience needs one.
+
 ## Section helpers
 
 - `gl-eyebrow` — small uppercase purple kicker above an `<h2>`.

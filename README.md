@@ -37,6 +37,20 @@ cp -r skills/gloam .claude/skills/gloam      # or ~/.claude/skills/gloam
 The skill is self-contained — it bundles the tokens, a component catalog, and
 copies of `gloam.css` / `gloam.js` under `references/`.
 
+## Keeping a consumer in sync
+
+A site that links `gloam.css`/`gloam.js` holds a copy that can drift. The skill
+ships a sync step under [`skills/gloam/scripts/`](./skills/gloam/scripts):
+
+- `sync-gloam.sh [dir] [ref]` — refetch both files from this repo (default
+  `main`) into `dir` and record the source commit in `dir/.gloam-version`.
+- `gloam-sync.yml` — a GitHub Actions workflow template that runs the script
+  weekly and opens a PR when the copy drifts.
+
+```sh
+cp skills/gloam/scripts/sync-gloam.sh site/ && sh site/sync-gloam.sh site
+```
+
 ## Tokens
 
 Every color is a `--gl-*` custom property. **Dark is the default**; light is
@@ -59,6 +73,7 @@ Classes are prefixed `gl-`:
 - **Layout:** `gl-wrap`, `gl-section`, `gl-eyebrow`, `gl-lede`, `gl-hint`, `gl-skip`
 - **Nav:** `gl-nav`, `gl-brand`, `gl-nav-toggle`
 - **Buttons:** `gl-btn` + `.primary` / `.ghost`
+- **Theme toggle:** `gl-theme-toggle` (`.gl-sun` / `.gl-moon` SVGs swap via CSS)
 - **Hero:** `gl-hero`, `gl-hero-grid`, `gl-grad`, `gl-cta`
 - **Terminal:** `gl-term` (`.bar`, `.dot`, `pre` + `.pr/.hd/.n/.loc/.ok/.warn` spans)
 - **Pills / tabs:** `gl-badges`, `gl-lang` (uses `aria-selected`)
@@ -89,6 +104,8 @@ Data-attribute driven, no-ops when absent:
 - `data-gl-copy="id"` — copy a snippet (Clipboard API + textarea fallback)
 - `data-gl-tabs` / `data-gl-tab` / `data-gl-panel` — pill tabs
 - `data-gl-nav-toggle="navId"` — mobile nav (closes on link tap)
+- `data-gl-theme-toggle` — flip light/dark on `<html data-theme>`, persisted in
+  localStorage (add `<script>try{var t=localStorage.getItem("gl-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>` in `<head>` for flash-free restore)
 - `data-gl-year` — current year
 
 See [`index.html`](./index.html) for a full working example of every component.

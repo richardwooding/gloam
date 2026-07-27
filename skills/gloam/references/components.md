@@ -30,7 +30,7 @@ on `gloam.css`; the interactive ones (`data-gl-*`) rely on `gloam.js`. Put `clas
       </svg>
       yourbrand
     </span>
-    <button class="gl-nav-toggle" aria-label="Toggle navigation" data-gl-nav-toggle="nav">☰</button>
+    <button class="gl-nav-toggle" aria-label="Toggle navigation" data-gl-nav-toggle="nav" aria-expanded="false">☰</button>
     <nav id="nav">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
@@ -38,6 +38,27 @@ on `gloam.css`; the interactive ones (`data-gl-*`) rely on `gloam.js`. Put `clas
     </nav>
   </div>
 </header>
+```
+
+## Theme toggle
+
+A `data-gl-theme-toggle` button flips `<html data-theme>` between light and dark and
+persists the choice in `localStorage`. `gloam.js` wires it up, keeps `aria-pressed` in
+sync, and restores the saved theme on load. The sun/moon icons swap via CSS — no JS. Drop
+it in the nav (before the GitHub button):
+
+```html
+<button class="gl-theme-toggle" data-gl-theme-toggle aria-label="Toggle color theme" aria-pressed="true">
+  <svg class="gl-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="gl-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+</button>
+```
+
+For **flash-free** restore, also add this one-liner in `<head>` (it runs before first
+paint, so the page never flickers from dark to the saved light theme):
+
+```html
+<script>try{var t=localStorage.getItem("gl-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 ```
 
 ## Hero + faux-terminal
@@ -94,6 +115,57 @@ location, `.ok` green, `.warn` amber. Keep output realistic.
 </section>
 ```
 
+### Clickable card
+
+Make a whole card a link with the stretched-link pattern: add `gl-card-link` to the card and
+`gl-stretch` to its primary `<a>`. The card gets an accent border on hover/focus, a click
+anywhere follows the stretched link, and any *other* links inside stay independently clickable.
+
+```html
+<article class="gl-card gl-card-link">
+  <h3>Project name</h3>
+  <p>One sentence on what it is.</p>
+  <p class="gl-hint" style="margin-top:14px">
+    <a class="gl-stretch" href="https://example.com/">Website ↗</a> ·
+    <a href="https://github.com/you/project">Code ↗</a>
+  </p>
+</article>
+```
+
+`gl-stretch` needs a positioned ancestor — `gl-card-link` provides it. Keep exactly one
+`gl-stretch` per card; the other anchors remain normal links.
+
+## Carousel (feature cards)
+
+A scroll-snap track of `gl-card`s. `gloam.js` (via `data-gl-carousel`) generates the
+dot indicators, wires prev/next, and auto-advances every 6s — pausing on hover/focus and
+disabling autoplay entirely under `prefers-reduced-motion`. Without JS it degrades to a
+plain scrollable row, and the viewport is the only thing that scrolls sideways.
+
+```html
+<div class="gl-carousel" data-gl-carousel role="group" aria-roledescription="carousel" aria-label="Projects">
+  <div class="gl-carousel-viewport" data-gl-carousel-viewport>
+    <article class="gl-card">
+      <h3>Project one</h3>
+      <p>One sentence on what it is.</p>
+    </article>
+    <!-- repeat gl-card slides -->
+  </div>
+  <div class="gl-carousel-ctrls">
+    <button class="gl-carousel-btn" data-gl-carousel-prev aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="gl-carousel-dots" data-gl-carousel-dots></div>
+    <button class="gl-carousel-btn" data-gl-carousel-next aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+```
+
+Shows 3 cards at a time (2 ≤820px, 1 ≤560px). The `.gl-carousel-dots` container is
+filled by `gloam.js`; leave it empty. Slides are ordinary `gl-card`s.
+
 ## Pill tabs (swap panels)
 
 ```html
@@ -105,7 +177,16 @@ location, `.ok` green, `.warn` amber. Keep output realistic.
 <div data-gl-panel="b" hidden>…panel B…</div>
 ```
 
-Non-tab pills (just badges) are the same `gl-lang` without `data-gl-tab`.
+Non-tab pills (just badges) are the same `gl-lang` without `data-gl-tab` — they
+render static (no pointer/hover/focus). For a **static list** of badges, use a
+semantic list so screen readers announce the count:
+
+```html
+<ul class="gl-badges" aria-label="Supported types">
+  <li class="gl-lang">go</li>
+  <li class="gl-lang">rust</li>
+</ul>
+```
 
 ## Code block (with token colors) + side-by-side
 
@@ -146,6 +227,38 @@ Each `data-gl-copy` points at the `id` of the `<code>` to copy.
   </div>
 </footer>
 ```
+
+## Analytics (opt-in — external, not for Artifacts)
+
+gloam ships **no** analytics — it's self-contained by design, and inlined pages run in Claude
+Artifacts under a CSP that blocks external hosts. For a **linked GitHub Pages** site you can
+opt in to Google Tag Manager by pasting the two standard snippets and swapping in your own
+container ID. Do **not** add this to an inlined Artifact — the tag is blocked by the CSP.
+
+Loader — as high in `<head>` as possible (right after the `charset` / `viewport` metas):
+
+```html
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+<!-- End Google Tag Manager -->
+```
+
+`<noscript>` fallback — immediately after the opening `<body class="gl">`:
+
+```html
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+```
+
+Replace `GTM-XXXXXXX` with your container ID. The snippet only loads the container; configure
+GA4 or other tags in the Tag Manager UI, not in the page. It loads unconditionally — add a
+consent gate if your audience needs one.
 
 ## Section helpers
 

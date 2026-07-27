@@ -14,15 +14,19 @@ Everything you need is in this skill folder:
 - `references/tokens.md` — the color/type/spacing tokens (dark + light).
 - `references/components.md` — copy-paste HTML for every component.
 - `references/gloam.css` — the full stylesheet (link it, or inline its contents).
-- `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav).
+- `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav,
+  theme toggle).
 - `references/marp.md` + `references/gloam.marp.css` — the gloam **Marp theme** for slide decks.
+- `scripts/sync-gloam.sh` + `scripts/gloam-sync.yml` — keep a linked consumer's copy of
+  the assets in sync with the gloam repo (see "Keeping a consumer in sync").
 
 ## When to use this
 
 Building a landing page, hero, feature grid, pricing section, docs site, or any page/
 component that should carry the gloam aesthetic — or when the user names gloam or asks for
-a "dark purple terminal-style" page. Also appropriate for an HTML **Artifact** or a
-**GitHub Pages** site (inline mode, below).
+a "dark purple terminal-style" page. Also appropriate for an HTML **Artifact** (inline
+mode) or a **GitHub Pages** site — either inlined, or **linked** with the sync workflow so
+the published page tracks gloam upstream (both modes below).
 
 ## The look, in one paragraph
 
@@ -47,19 +51,51 @@ an afterthought.
 **B — Inlined (single self-contained file — Artifacts, GitHub Pages, email-safe).** Paste
 the entire contents of `references/gloam.css` into a `<style>` in `<head>`, and
 `references/gloam.js` into a `<script>` before `</body>`. No external requests. This is the
-preferred mode for Claude Artifacts (a strict CSP blocks external hosts) and for
-zero-dependency Pages sites.
+required mode for Claude Artifacts (a strict CSP blocks external hosts). For a **GitHub
+Pages** site either mode works: inline for a truly single-file drop, or **linked** (below)
+so the sync workflow keeps the page current with gloam.
 
 Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
+
+## Keeping a consumer in sync
+
+A linked consumer holds a *copy* of `gloam.css`/`gloam.js`, so it can drift as
+gloam evolves. This skill ships a sync step in `scripts/`:
+
+- `scripts/sync-gloam.sh [dir] [ref]` — refetch both files from
+  `github.com/richardwooding/gloam` (default `main`) into `dir` and record the
+  source commit in `dir/.gloam-version`. Drop it next to the vendored files
+  (e.g. `site/sync-gloam.sh`) and run `sh site/sync-gloam.sh site`.
+- `scripts/gloam-sync.yml` — a GitHub Actions workflow template that runs the
+  script weekly and opens a PR when the copy drifts. Copy it into the
+  consumer's `.github/workflows/` and set `GLOAM_DIR`.
+
+**One-time repo setting (required for the workflow's PR).** The workflow opens the
+drift PR with the built-in `GITHUB_TOKEN`, so each consumer repo must permit it:
+enable **Settings → Actions → General → Workflow permissions → "Allow GitHub Actions
+to create and approve pull requests"**, or run once from inside the consumer repo
+(`gh` expands `{owner}`/`{repo}` from its git remote):
+`gh api -X PUT repos/{owner}/{repo}/actions/permissions/workflow -F can_approve_pull_request_reviews=true`.
+Without it the sync commit still pushes but PR creation fails with *"GitHub Actions is
+not permitted to create or approve pull requests."* It's per-repo — user-owned accounts
+have no org-wide default, so set it on every new consumer.
+
+A **GitHub Pages** site is the natural linked consumer: vendor `gloam.css`/`gloam.js`
+into `docs/`, drop `sync-gloam.sh` beside them, link them from the page, and add
+`gloam-sync.yml` with `GLOAM_DIR: docs` — a weekly PR then keeps the published page in
+step with gloam.
+
+Inlined pages have no separate files to sync — re-run the skill (or re-paste
+`references/gloam.css`/`gloam.js`) to update them.
 
 ## Presentations (Marp)
 
 For a **slide deck / talk / presentation** in gloam, use the Marp theme instead
 of the page components: author a Marp Markdown deck with `theme: gloam` and
-render it with `gloam.marp.css`. Full instructions — front-matter, the slide
-classes (`lead` / `terminal` / `end` / `light`), accent spans, and the render
-commands — are in **`references/marp.md`**. Follow that file for decks; the rest
-of this skill covers web pages.
+render it with `references/gloam.marp.css`. Full instructions — front-matter,
+the slide classes (`lead` / `terminal` / `end` / `light`), accent spans, and the
+render commands — are in **`references/marp.md`**. Follow that file for decks;
+the rest of this skill covers web pages.
 
 ## How to build a page
 
@@ -75,7 +111,8 @@ of this skill covers web pages.
    command and a few output rows (`.pr` prompt, `.hd` header, `.n` accent number, `.loc`
    muted location, `.ok`/`.warn` status). Make the content real, not lorem ipsum.
 5. **Wire behaviors with data-attributes** (`data-gl-copy`, `data-gl-tabs`/`data-gl-tab`/
-   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-year`) — `gloam.js` activates them.
+   `data-gl-panel`, `data-gl-nav-toggle`, `data-gl-theme-toggle`, `data-gl-year`,
+   `data-gl-carousel`) — `gloam.js` activates them.
 
 ## Rules that keep it "gloam"
 
@@ -90,7 +127,8 @@ of this skill covers web pages.
   interactive pills (with `aria-selected`); visible `:focus-visible` rings; sufficient
   contrast in both themes (the tokens are tuned for it).
 - **Restraint over decoration.** Whitespace, one accent, crisp type. Avoid gradients beyond
-  the primary button and the hero headline `gl-grad`.
+  the primary button and the hero headline `gl-grad`. Motion is subtle and optional: the
+  only animated component is the carousel, and it must honor `prefers-reduced-motion`.
 
 ## Quick reference
 
@@ -98,12 +136,22 @@ of this skill covers web pages.
 - Nav: `gl-nav` > `gl-wrap` > `gl-brand` + `<nav>`; mobile via `gl-nav-toggle` +
   `data-gl-nav-toggle`.
 - Buttons: `gl-btn` + `.primary` / `.ghost`.
+- Theme toggle: `gl-theme-toggle[data-gl-theme-toggle]` with `.gl-sun` + `.gl-moon` SVGs;
+  persists `data-theme` in localStorage (add the `<head>` restore snippet for no flash).
 - Hero: `gl-hero` > `gl-wrap.gl-hero-grid`; headline accent = `gl-grad`.
 - Terminal: `gl-term` > `.bar` (three `.dot`s + `.t` title) + `<pre>`.
 - Pills/tabs: `gl-badges[data-gl-tabs]` of `gl-lang[data-gl-tab]`, panels `[data-gl-panel]`.
-- Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number).
+  Interactive styling is scoped to `[data-gl-tab]`; a bare `gl-lang` is a **static badge** —
+  use a semantic `<ul class="gl-badges">` of `<li class="gl-lang">` for a list of them.
+- Cards: `gl-grid.feat`/`.two` > `gl-card` (`gl-icon` chip, `gl-stat` big number). Make one
+  clickable with `gl-card-link` + a `gl-stretch` primary `<a>` (whole card follows it; other
+  links stay clickable).
+- Carousel: `gl-carousel[data-gl-carousel]` > `gl-carousel-viewport[data-gl-carousel-viewport]`
+  of `gl-card` slides + `gl-carousel-ctrls` (prev/next `gl-carousel-btn` + empty
+  `gl-carousel-dots`). `gloam.js` builds the dots and auto-advances (motion-safe).
 - Code: `pre.gl-code` with `.c`/`.k`/`.s` spans; side-by-side via `gl-split`.
 - Install: `gl-install` > `gl-snip` (`.lbl` + `<code id>` + `gl-copy[data-gl-copy]`).
 - Footer: `gl-footer` > `gl-wrap` > `gl-brand` + `gl-fnav`.
+- Analytics: **opt-in** GTM snippet (linked GitHub Pages only — never inline into an Artifact; external, CSP-blocked) — see components.md.
 
 Full, correct markup for each is in `references/components.md` — prefer copying from there.

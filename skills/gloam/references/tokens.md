@@ -50,3 +50,6 @@ Need a tint (e.g. an icon chip background)? Mix from a token instead of inventin
 ```css
 background: color-mix(in srgb, var(--gl-accent) 18%, transparent);
 ```
+
+New components reuse these tokens — nothing new is needed. The carousel, for instance,
+adds no tokens; it styles its track, buttons, and dots entirely from the set above.

@@ -1,0 +1,250 @@
+/* @theme gloam */
+/*!
+ * gloam.marp.css — the gloam design language as a Marp theme.
+ * Dark-first, purple-accented, terminal-flavored slides.
+ * https://github.com/richardwooding/gloam · MIT
+ *
+ * Usage:
+ *   marp deck.md --theme path/to/gloam.marp.css
+ * or, once the file is on Marp's theme set, put `theme: gloam` in the deck's
+ * front-matter. Dark is the default; add `<!-- _class: light -->` (one slide)
+ * or `<!-- class: light -->` (rest of the deck) to invert.
+ *
+ * Slide classes: lead (centered title), light (light palette), terminal
+ * (faux-terminal chrome), end (centered closing). Spans: .n (accent number),
+ * .muted, .ok, .warn.
+ */
+
+/* ---- tokens (dark, default) ---- */
+:root {
+  --gl-bg: #0d1117;
+  --gl-panel: #161b22;
+  --gl-panel-2: #1c2230;
+  --gl-border: #2a3038;
+  --gl-fg: #e6edf3;
+  --gl-muted: #9aa7b4;
+  --gl-faint: #6b7684;
+  --gl-accent: #a371f7;
+  --gl-accent-2: #bd93ff;
+  --gl-accent-ink: #f5efff;
+  --gl-green: #3fb950;
+  --gl-amber: #d29922;
+  --gl-radius: 14px;
+  --gl-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --gl-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Light palette — deliberate opt-in (presentations pick one look), applied by
+   the `light` class rather than prefers-color-scheme so exports are stable. */
+section.light {
+  --gl-bg: #ffffff;
+  --gl-panel: #f6f8fa;
+  --gl-panel-2: #eef1f5;
+  --gl-border: #d8dee4;
+  --gl-fg: #1f2328;
+  --gl-muted: #59636e;
+  --gl-faint: #818b98;
+  --gl-accent: #7c3aed;
+  --gl-accent-2: #6d28d9;
+  --gl-accent-ink: #ffffff;
+  --gl-green: #1a7f37;
+  --gl-amber: #9a6700;
+}
+
+/* ---- slide surface ---- */
+section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: var(--gl-bg);
+  color: var(--gl-fg);
+  font-family: var(--gl-sans);
+  font-size: 26px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  padding: 62px 70px 72px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- headings ---- */
+h1, h2, h3, h4 {
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin: 0 0 0.5em;
+  color: var(--gl-fg);
+}
+h1 { font-size: 1.85em; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.12em; font-weight: 700; color: var(--gl-muted); }
+h4 { font-size: 1em; font-weight: 700; color: var(--gl-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Signature gloam accent bar to the left of a slide title. */
+h1, h2 { position: relative; padding-left: 0.62em; }
+h1::before, h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.14em;
+  bottom: 0.14em;
+  width: 0.16em;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--gl-accent), var(--gl-accent-2));
+}
+
+/* ---- prose ---- */
+p { margin: 0 0 0.7em; }
+a { color: var(--gl-accent-2); text-decoration: none; }
+strong { color: var(--gl-fg); font-weight: 800; }
+em { color: var(--gl-muted); font-style: italic; }
+small { color: var(--gl-faint); font-size: 0.8em; }
+
+/* Accent/status text spans (use inline HTML: <span class="n">42</span>). */
+.n { color: var(--gl-accent-2); font-family: var(--gl-mono); font-weight: 700; }
+.muted { color: var(--gl-muted); }
+.ok { color: var(--gl-green); }
+.warn { color: var(--gl-amber); }
+
+/* ---- lists ---- */
+ul, ol { margin: 0 0 0.7em; padding-left: 1.3em; }
+li { margin: 0.28em 0; }
+li::marker { color: var(--gl-accent-2); }
+ul ul, ol ol, ul ol, ol ul { margin: 0.2em 0; }
+
+/* ---- code ---- */
+code {
+  font-family: var(--gl-mono);
+  font-size: 0.86em;
+  background: var(--gl-panel-2);
+  color: var(--gl-accent-2);
+  border: 1px solid var(--gl-border);
+  border-radius: 6px;
+  padding: 0.08em 0.38em;
+}
+pre {
+  margin: 0.4em 0 0.7em;
+  background: var(--gl-panel);
+  border: 1px solid var(--gl-border);
+  border-radius: var(--gl-radius);
+  padding: 20px 22px;
+  overflow-x: auto;
+  box-shadow: 0 18px 44px -30px rgba(0, 0, 0, 0.8);
+}
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--gl-fg);
+  font-size: 0.72em;
+  line-height: 1.6;
+}
+/* Marp/Prism token tints, kept within the gloam palette. */
+.hljs-comment, .token.comment { color: var(--gl-faint); }
+.hljs-keyword, .token.keyword, .token.tag, .token.selector { color: var(--gl-accent-2); }
+.hljs-string, .token.string, .token.attr-value { color: var(--gl-green); }
+.hljs-number, .token.number { color: var(--gl-amber); }
+.hljs-title, .token.function { color: var(--gl-fg); }
+
+/* ---- blockquote ---- */
+blockquote {
+  margin: 0.4em 0 0.7em;
+  padding: 0.1em 0 0.1em 1em;
+  border-left: 4px solid var(--gl-accent);
+  color: var(--gl-muted);
+  font-style: normal;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+/* ---- tables ---- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.82em;
+  margin: 0.4em 0 0.7em;
+}
+th, td { text-align: left; padding: 0.5em 0.8em; border-bottom: 1px solid var(--gl-border); }
+thead th {
+  color: var(--gl-accent-2);
+  font-family: var(--gl-mono);
+  font-size: 0.86em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--gl-border);
+  background: var(--gl-panel);
+}
+tbody tr:last-child td { border-bottom: 0; }
+
+/* ---- rules / images ---- */
+hr { border: 0; border-top: 1px solid var(--gl-border); width: 100%; margin: 0.6em 0; }
+img { border-radius: 10px; }
+
+/* ---- chrome: header / footer / pagination ---- */
+header, footer {
+  color: var(--gl-faint);
+  font-family: var(--gl-mono);
+  font-size: 0.5em;
+  letter-spacing: 0.02em;
+}
+header { padding: 24px 70px 0; }
+footer { padding: 0 70px 22px; }
+section::after {
+  /* page number */
+  color: var(--gl-faint);
+  font-family: var(--gl-mono);
+  font-size: 0.5em;
+  right: 34px;
+  bottom: 24px;
+}
+
+/* ---- lead (title) slide ---- */
+section.lead {
+  justify-content: center;
+  text-align: center;
+  padding: 70px 90px;
+}
+section.lead h1 {
+  padding-left: 0;
+  font-size: 2.7em;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--gl-accent-2), #e9d5ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+section.lead h1::before { display: none; }
+section.lead h2 {
+  padding-left: 0;
+  font-weight: 600;
+  font-size: 1.15em;
+  color: var(--gl-muted);
+}
+section.lead h2::before { display: none; }
+section.lead p { color: var(--gl-muted); }
+section.lead ul { display: inline-block; text-align: left; }
+
+/* ---- closing slide ---- */
+section.end { justify-content: center; text-align: center; }
+section.end a { color: var(--gl-accent-2); }
+
+/* ---- terminal slide (faux macOS window chrome) ---- */
+section.terminal {
+  background: var(--gl-panel);
+  font-family: var(--gl-mono);
+  padding-top: 84px;
+}
+section.terminal::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 34px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+}
+section.terminal h1, section.terminal h2, section.terminal h3 {
+  font-family: var(--gl-mono);
+}
+section.terminal pre { box-shadow: none; }

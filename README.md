@@ -67,6 +67,21 @@ Classes are prefixed `gl-`:
 - **Install:** `gl-install`, `gl-snip`, `gl-copy`
 - **Footer:** `gl-footer`, `gl-fnav`
 
+## Presentations (Marp)
+
+gloam ships a **[Marp](https://marp.app/) theme** so slide decks carry the same
+look — dark-first, purple accent, terminal chrome. See [`marp/`](./marp):
+
+```sh
+marp deck.md --theme marp/gloam.marp.css -o deck.html   # or .pdf / .pptx
+```
+
+Opt in from a deck's front-matter (`marp: true`, `theme: gloam`), then write
+Markdown: `#`/`##` titles get the accent bar, code fences become elevated
+panels, and slide classes `lead` / `terminal` / `end` / `light` cover the rest.
+[`marp/example.md`](./marp/example.md) is a complete starter deck;
+[`marp/README.md`](./marp/README.md) has the full class/span reference.
+
 ## Behaviors (`gloam.js`, optional)
 
 Data-attribute driven, no-ops when absent:

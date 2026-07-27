@@ -1,6 +1,6 @@
 ---
 name: gloam
-description: Build web pages in the "gloam" design language — a dark-first, purple-accented, terminal-flavored aesthetic (tokens + components: sticky nav, hero with a faux-terminal, feature-card grids, code blocks, install snippets with copy buttons, pill tabs, footer). Use when building a landing/marketing page, product hero, feature grid, pricing, or docs/site that should look like gloam; when the user says "gloam", "the gloam look", "like the codemetrics site", or asks for a dark purple terminal-style page; or when styling an HTML Artifact or GitHub Pages site in this aesthetic. Produces a self-contained, responsive, accessible, dark/light-aware page.
+description: Build web pages AND Marp slide decks in the "gloam" design language — a dark-first, purple-accented, terminal-flavored aesthetic (tokens + components: sticky nav, hero with a faux-terminal, feature-card grids, code blocks, install snippets with copy buttons, pill tabs, footer). Use when building a landing/marketing page, product hero, feature grid, pricing, or docs/site that should look like gloam; when building a slide deck, talk, or presentation "in gloam" (Marp / Markdown slides); when the user says "gloam", "the gloam look", "like the codemetrics site", or asks for a dark purple terminal-style page or deck; or when styling an HTML Artifact or GitHub Pages site in this aesthetic. Produces a self-contained, responsive, accessible, dark/light-aware page or deck.
 ---
 
 # gloam design language
@@ -15,6 +15,7 @@ Everything you need is in this skill folder:
 - `references/components.md` — copy-paste HTML for every component.
 - `references/gloam.css` — the full stylesheet (link it, or inline its contents).
 - `references/gloam.js` — the optional behaviors (copy buttons, pill tabs, mobile nav).
+- `references/marp.md` + `references/gloam.marp.css` — the gloam **Marp theme** for slide decks.
 
 ## When to use this
 
@@ -50,6 +51,15 @@ preferred mode for Claude Artifacts (a strict CSP blocks external hosts) and for
 zero-dependency Pages sites.
 
 Either way, put `class="gl"` on `<body>` so the base typography/reset applies.
+
+## Presentations (Marp)
+
+For a **slide deck / talk / presentation** in gloam, use the Marp theme instead
+of the page components: author a Marp Markdown deck with `theme: gloam` and
+render it with `gloam.marp.css`. Full instructions — front-matter, the slide
+classes (`lead` / `terminal` / `end` / `light`), accent spans, and the render
+commands — are in **`references/marp.md`**. Follow that file for decks; the rest
+of this skill covers web pages.
 
 ## How to build a page
 

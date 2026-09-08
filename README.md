@@ -80,7 +80,7 @@ Classes are prefixed `gl-`:
 - **Cards / grid:** `gl-grid` (`.two` / `.feat`), `gl-card`, `gl-icon`, `gl-stat`
 - **Code:** `gl-code` (`.c` comment / `.k` keyword / `.s` string), `gl-split`
 - **Install:** `gl-install`, `gl-snip`, `gl-copy`
-- **Footer:** `gl-footer`, `gl-fnav`
+- **Footer:** `gl-footer`, `gl-fnav`, `gl-sponsor` (opt-in — you supply the anchor)
 
 ## Presentations (Marp)
 

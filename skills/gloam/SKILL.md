@@ -151,7 +151,9 @@ the rest of this skill covers web pages.
   `gl-carousel-dots`). `gloam.js` builds the dots and auto-advances (motion-safe).
 - Code: `pre.gl-code` with `.c`/`.k`/`.s` spans; side-by-side via `gl-split`.
 - Install: `gl-install` > `gl-snip` (`.lbl` + `<code id>` + `gl-copy[data-gl-copy]`).
-- Footer: `gl-footer` > `gl-wrap` > `gl-brand` + `gl-fnav`.
+- Footer: `gl-footer` > `gl-wrap` > `gl-brand` + `gl-fnav`; optional `gl-sponsor` link, last item.
+- Sponsor: **opt-in** footer link `gl-sponsor` — gloam ships the style, you paste the anchor
+  (components.md). Never auto-injected, so an asset sync cannot change what a page asks for.
 - Analytics: **opt-in** GTM snippet (linked GitHub Pages only — never inline into an Artifact; external, CSP-blocked) — see components.md.
 
 Full, correct markup for each is in `references/components.md` — prefer copying from there.

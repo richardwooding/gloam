@@ -228,6 +228,30 @@ Each `data-gl-copy` points at the `id` of the `<code>` to copy.
 </footer>
 ```
 
+## Sponsor link (opt-in — you supply the anchor)
+
+gloam ships the **style**, never the link. Paste this as the last item of your `.gl-fnav` and swap in
+your own handle. Nothing in `gloam.js` injects it, so a scheduled asset sync can never change what
+your page says or who it asks for.
+
+```html
+<nav class="gl-fnav">
+  <a href="…">GitHub</a>
+  <a class="gl-sponsor" href="https://github.com/sponsors/YOURNAME">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg>
+    Sponsor
+  </a>
+</nav>
+```
+
+**Footer, not nav.** `.gl-nav nav.open .gl-btn` is hidden in the open mobile nav, so a nav-only
+sponsor CTA disappears on a phone. `.gl-sponsor` carries its own accent colour so it works outside a
+footer too — but one placement per page, and not in the hero `.gl-cta`, where an above-the-fold ask
+competes with the primary call to action.
+
+In a small-type footer (`.gl-hint`), drop the `<svg>` and keep the text: a fixed 14px icon looks
+oversized next to `.82rem` text.
+
 ## Analytics (opt-in — external, not for Artifacts)
 
 gloam ships **no** analytics — it's self-contained by design, and inlined pages run in Claude
